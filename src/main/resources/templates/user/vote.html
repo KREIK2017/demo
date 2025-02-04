@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vote</title>
+</head>
+<body>
+    <h2>Vote for a Candidate</h2>
+    <form action="/user/vote" method="post">
+        <h2>Голосування</h2>
+        <div th:each="candidate : ${candidates}">
+            <input type="radio" name="candidateName" th:value="${candidate}" required />
+            <label th:text="${candidate}"></label>
+        </div>
+        <button type="submit">Проголосувати</button>
+        <p th:text="${error}" style="color: red;"></p>
+    </form>
+    
+</body>
+</html>

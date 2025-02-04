@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Electronic Voting Platform</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .nav-container a {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            display: block;
+            width: 200px;
+            text-align: center;
+        }
+        .nav-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Electronic Voting Platform</h1>
+
+    <div class="nav-container">
+        <h2>Admin Section</h2>
+        <a th:href="@{/admin/register}">Admin Registration</a>
+        <a th:href="@{/admin/login}">Admin Login</a>
+        <a th:href="@{/admin/delete}">Delete User</a>
+
+        <h2>User Section</h2>
+        <a th:href="@{/user/register}">User Registration</a>
+        <a th:href="@{/user/login}">User Login</a>
+        <a th:href="@{/user/vote}">Vote</a>
+
+        <h2>Voting Section</h2>
+        <a th:href="@{/vote/cast}">Cast a Vote</a>
+        
+    </div>
+</body>
+</html>
