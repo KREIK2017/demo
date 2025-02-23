@@ -1,63 +1,65 @@
 package com.mychko.demo.controllers;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mychko.demo.models.User;
-import com.mychko.demo.repositories.UserRepository;
+import com.mychko.demo.repository.UserRepository;
+import com.mychko.demo.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/user")
-@SessionAttributes("loggedInUser") // Зберігаємо користувача в сесії
 public class UserController {
-    private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserService userService;
+    private UserRepository userRepository;
 
     @GetMapping("/register")
-    public String showRegisterForm(Model model) {
+    public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
         return "user/register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user) {
-        userRepository.save(user);
-        return "redirect:/user/login";
+    public String registerUser(@Valid User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "user/register";
+        }
+        userService.registerUser(user);
+        return "redirect:/index";
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String loginPage() {
         return "user/login";
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam("username") String username,
-                            @RequestParam("password") String password,
-                            Model model) {
-        // Знаходимо користувача в базі за іменем та паролем
-        User user = userRepository.findByUsernameAndPassword(username, password);
-        if (user != null) {
-            model.addAttribute("loggedInUser", user);
-            return "redirect:/"; // Повертаємо на головну сторінку після успішного входу
-        } else {
-            model.addAttribute("error", "Невірний логін або пароль");
-            return "user/login"; // Якщо не вдалося знайти користувача, повертаємо назад на сторінку входу
-        }
-    }
+    public String loginUser(@RequestParam String username, HttpServletRequest request) {
+        Optional<User> optionalUser = userRepository.findByUsername(username); // Отримуємо Optional<User>
 
-    @GetMapping("/vote")
-    public String showVotingPage() {
-        return "user/vote";
+        if (optionalUser.isPresent()) { // Перевіряємо, чи юзер знайдений
+            User user = optionalUser.get(); // Отримуємо User з Optional
+            request.getSession().setAttribute("user", user); // Зберігаємо весь об'єкт User в сесії
+            System.out.println("User saved in session: " + user.getUsername()); // Додати логування
+
+            return "redirect:/";
+        }
+
+        return "redirect:/login?error"; // Якщо користувача нема, повертаємо на сторінку логіну з помилкою
     }
 
     @GetMapping("/logout")
-    public String logout(Model model) {
-        model.addAttribute("loggedInUser", null);
-        return "redirect:/";
+    public String logoutUser(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "redirect:/login";
     }
 }

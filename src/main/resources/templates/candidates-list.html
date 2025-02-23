@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список кандидатів</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Список кандидатів</h1>
+        <nav>
+            <a href="/">На головну</a>
+        </nav>
+    </header>
+    
+    <section class="candidate-list">
+        <h2>Оберіть кандидата для голосування</h2>
+        <ul>
+            <li th:each="candidate : ${candidates}">
+                <span th:text="${candidate.name}"></span>
+            </li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Платформа електронного голосування</p>
+    </footer>
+</body>
+</html>

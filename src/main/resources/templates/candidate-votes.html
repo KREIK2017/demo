@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перегляд голосів за кандидатів</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Перегляд голосів за кандидатів</h1>
+        <nav>
+            <a href="/user/vote">Голосувати</a>
+            <a href="/">На головну</a>
+        </nav>
+    </header>
+    
+    <section class="votes-section">
+        <h2>Список голосів за кандидатів</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ім'я кандидата</th>
+                    <th>Кількість голосів</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="candidate : ${candidates}">
+                    <td th:text="${candidate.name}"></td>
+                    <td th:text="${candidate.voteCount}"></td> <!-- Виведення кількості голосів -->
+                </tr>
+                
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Платформа електронного голосування</p>
+    </footer>
+</body>
+</html>

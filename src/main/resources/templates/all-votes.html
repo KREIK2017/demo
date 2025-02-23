@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Всі голоси</title>
+</head>
+<body>
+    <h1>Голоси за кандидатів</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Ім'я кандидата</th>
+                <th>Голосували</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="candidate : ${candidates}">
+                <td th:text="${candidate.name}"></td>
+                <td>
+                    <ul>
+                        <!-- Отримуємо голоси для конкретного кандидата -->
+                        <li th:each="vote : ${votesForCandidates[candidate.id]}">
+                            <span th:text="${vote.user.username}"></span>
+                            <form th:action="@{/c/vote/delete-vote}" method="post">
+                                <input type="hidden" name="voteId" th:value="${vote.id}">
+                                <button type="submit">Видалити голос</button>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

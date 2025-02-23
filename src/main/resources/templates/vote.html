@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосування</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Голосування за кандидата</h1>
+        <nav>
+            <a href="/c/allvotes">Переглянути голоси</a>
+            <a href="/">На головну</a>
+        </nav>
+    </header>
+    
+    <section class="vote-section">
+        <h2>Оберіть кандидата та проголосуйте</h2>
+        <form action="/vote/vote" method="post">
+            <label for="candidate">Оберіть кандидата:</label>
+            <select name="candidateId" id="candidate" required>
+                <option value="" disabled selected>Оберіть кандидата</option>
+                <option th:each="candidate : ${candidates}" th:value="${candidate.id}" th:text="${candidate.name}"></option>
+            </select>
+            
+            <button type="submit">Проголосувати</button>
+        </form>
+        
+        
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Платформа електронного голосування</p>
+    </footer>
+</body>
+</html>

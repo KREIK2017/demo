@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Electronic Voting Platform</title>
     <meta charset="UTF-8">
@@ -8,15 +9,18 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
+
         h1 {
             color: #333;
         }
+
         .nav-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 20px;
         }
+
         .nav-container a {
             text-decoration: none;
             color: white;
@@ -28,28 +32,60 @@
             width: 200px;
             text-align: center;
         }
+
         .nav-container a:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
-    <h1>Welcome to the Electronic Voting Platform</h1>
+    <h2>Головна сторінка</h2>
 
-    <div class="nav-container">
-        <h2>Admin Section</h2>
-        <a th:href="@{/admin/register}">Admin Registration</a>
-        <a th:href="@{/admin/login}">Admin Login</a>
-        <a th:href="@{/admin/delete}">Delete User</a>
+    <!-- Якщо користувач авторизований -->
+    <p th:if="${username != null}">
+        Привіт, <span th:text="${username}"></span>!
+    <form method="post" th:action="@{/logout}">
+        <button type="submit">Вийти</button>
+    </form>
+    </p>
 
-        <h2>User Section</h2>
-        <a th:href="@{/user/register}">User Registration</a>
-        <a th:href="@{/user/login}">User Login</a>
-        <a th:href="@{/user/vote}">Vote</a>
+    <!-- Якщо користувач не авторизований -->
+    <p th:if="${username == null}">
+        Ви не авторизовані. <a href="/login">Увійти</a>
+    </p>
 
-        <h2>Voting Section</h2>
-        <a th:href="@{/vote/cast}">Cast a Vote</a>
-        
+
+
+    <div th:if="${#authentication != null}">
+        <p>Ви увійшли як: <span th:text="${#authentication.name}"></span></p>
+        <form method="post" th:action="@{/logout}">
+            <!-- Для всіх користувачів -->
+            <button type="submit">Вийти</button>
+        </form>
     </div>
+    <!-- Перевірка, чи є роль ROLE_ADMIN -->
+    <div th:if="${isAdmin and !isUser}">
+        <!-- Вміст для адмінів -->
+        <a href="/c/candidates">Кандидати</a>
+        <a href="/c/candidate/add">Додати кандидатів</a>
+        <a href="/c/candidate/delete">Видалити кандидатів</a>
+        <a href="/c/votes-delete">Видалити голоси</a>
+
+        <a href="/vote/candidate-votes">Список голосів</a>
+
+    </div>
+    <!-- Перевірка, чи є роль ROLE_USER -->
+    <div th:if="${isUser and !isAdmin}">
+        <!-- Вміст для користувачів -->
+        <a href="/c/candidates">Список кандидатів</a>
+        <a href="/vote/candidate-votes">Список голосів</a>
+
+        <a href="/vote/vote">Голосувати</a>
+
+    </div>
+
+
 </body>
+
 </html>

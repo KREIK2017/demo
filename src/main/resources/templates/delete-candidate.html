@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Видалити кандидата</title>
+</head>
+<body>
+    <h1>Видалення кандидата</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ім'я</th>
+                <th>Партія</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="candidate : ${candidates}">
+                <td th:text="${candidate.id}"></td>
+                <td th:text="${candidate.name}"></td>
+                <td th:text="${candidate.party}"></td>
+                <td>
+                    <form th:action="@{/c/candidate/delete/{id}(id=${candidate.id})}" method="post"
+                          onsubmit="return confirm('Ви впевнені, що хочете видалити цього кандидата?')">
+                        <button type="submit">Видалити</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/c/candidates">Повернутися до списку кандидатів</a>
+</body>
+</html>

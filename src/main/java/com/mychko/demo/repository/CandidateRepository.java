@@ -1,10 +1,8 @@
-package com.mychko.demo.repositories;
+package com.mychko.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.mychko.demo.models.Candidate;
-import java.util.List;  // Додано імпорт List
 
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
-    List<Candidate> findAll();
+    // JpaRepository вже містить методи findAll(), save(), deleteById() та інші.
 }
